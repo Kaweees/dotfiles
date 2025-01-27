@@ -60,18 +60,18 @@ Before attempting to build this project, make sure you have [git](https://mccd.s
 
 To get a local copy of my dotfiles up and running on your machine, follow these simple steps:
 
-1. Clone the project repository
-
-   ```sh
-   git clone https://github.com/Kaweees/dotfiles.git ~/Documents/GitHub/dotfiles
-   cd ~/Documents/GitHub/dotfiles
-   ```
-
-2. Opt into the experimental [flakes](https://nixos.wiki/wiki/flakes) and [nix-command](https://nixos.wiki/wiki/Nix_command) features
+1. Opt into the experimental [flakes](https://nixos.wiki/wiki/flakes) and [nix-command](https://nixos.wiki/wiki/Nix_command) features
 
    ```sh
    nix --version # should be Nix 2.4 or higher
    export NIX_CONFIG="experimental-features = nix-command flakes"
+   ```
+
+2. Initialize the flake
+
+   ```sh
+   nix flake init -t github:kaweees/dotfiles ~/Documents/GitHub/dotfiles
+   cd ~/Documents/GitHub/dotfiles
    ```
 
 3. Generate your own [hardware-configuration.nix](./nixos/hardware-configuration.nix) file and apply them to the configuration.
@@ -92,14 +92,20 @@ To get a local copy of my dotfiles up and running on your machine, follow these 
    + If you are on an installed system
 
       ```sh
-      sudo nixos-rebuild switch --flake .#hostname
+      sudo nixos-rebuild switch --flake .#kaweees-aero --no-root-passwd /etc/nixos#default
       ```
 
    + If you are on a live installation medium
 
       ```sh
-      nixos-install --flake .#hostname && reboot
+      nixos-install --flake .#kaweees-aero --no-root-passwd && reboot
       ```
+
+6. Change the password for the user
+
+   ```sh
+   passwd kaweees
+   ```
 
 <!-- PROJECT FILE STRUCTURE -->
 ## Project Structure
