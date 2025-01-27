@@ -46,23 +46,33 @@ Here are some details about my setup:
 + **Color Scheme**: [gruvbox](https://github.com/morhetz/gruvbox)
 + **Font**: [FiraCode Nerd Font](https://github.com/kranack/FiraCode) [(cheatsheet)](https://www.nerdfonts.com/cheat-sheet)
 
-## Installation
+<!-- GETTING STARTED -->
+## Getting Started
 
-### Using Git and the setup script
+### Prerequisites
 
-You can clone the repository wherever you want. (I like to keep it in `~/Documents/GitHub/dotfiles`, with `~/dotfiles` as a symlink.) The setup script will pull in the latest version and copy the files to your home folder.
+Before attempting to build this project, make sure you have [NixOS](https://nixos.org/download.html), [git](https://mccd.space/posts/git-to-deploy/) and [Home Manager](https://nix.dev/home-manager) installed on your machine.
 
-```sh
-sudo apt update -y
-sudo apt install git -y
-git clone https://github.com/Kaweees/dotfiles.git ~/Documents/GitHub/Projects/dotfiles --recurse-submodules && cd dotfiles && python3 stowizer.py add zsh
-```
+### Installation
 
-```
-git submodule update --init --recursive --remote
-git submodule add <repo url> <location in repo>
-```
+> [!WARNING]  
+> You can clone my dotfiles wherever you want, but some configurations expect it to be in `~/Documents/GitHub/dotfiles`. Change at your own risk.
 
+To get a local copy of my dotfiles up and running on your machine, follow these simple steps:
+
+1. Clone the project repository
+
+   ```sh
+   git clone https://github.com/Kaweees/dotfiles.git ~/Documents/GitHub/dotfiles
+   cd ~/Documents/GitHub/dotfiles
+   ```
+
+2. Opt into the experimental [flakes](https://nixos.wiki/wiki/flakes) and [nix-command](https://nixos.wiki/wiki/Nix_command) features
+
+   ```sh
+   nix --version # should be Nix 2.4 or higher
+   export NIX_CONFIG="experimental-features = nix-command flakes"
+   ```
 
 <!-- PROJECT FILE STRUCTURE -->
 ## Project Structure
