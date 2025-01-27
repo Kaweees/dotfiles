@@ -51,7 +51,7 @@ Here are some details about my setup:
 
 ### Prerequisites
 
-Before attempting to build this project, make sure you have [NixOS](https://nixos.org/download.html), [git](https://mccd.space/posts/git-to-deploy/) and [Home Manager](https://nix.dev/home-manager) installed on your machine.
+Before attempting to build this project, make sure you have [git](https://mccd.space/posts/git-to-deploy/) installed on your machine. Additionally, you need to have [NixOS booted up (either live or installed)](https://nixos.org/download#download-nixos) or [Nix](https://nixos.org/download.html#nix) and [Home Manager](https://nix.dev/home-manager) installed on your existing distro (even on Darwin).
 
 ### Installation
 
@@ -74,10 +74,37 @@ To get a local copy of my dotfiles up and running on your machine, follow these 
    export NIX_CONFIG="experimental-features = nix-command flakes"
    ```
 
+3. Generate your own [hardware-configuration.nix](./nixos/hardware-configuration.nix) file and apply them to the configuration.
+
+   ```sh
+   nixos-generate-config --root /mnt/nixos
+   cp /mnt/nixos/etc/nixos/hardware-configuration.nix ./nixos/hardware-configuration.nix
+   ```
+
+4. Update the flake inputs
+
+   ```sh
+   nix flake update
+   ```
+
+5. Apply the system configurations
+
+   + If you are on an installed system
+
+      ```sh
+      sudo nixos-rebuild switch --flake .#hostname
+      ```
+
+   + If you are on a live installation medium
+
+      ```sh
+      nixos-install --flake .#hostname && reboot
+      ```
+
 <!-- PROJECT FILE STRUCTURE -->
 ## Project Structure
 
-```
+```sh
 . dotfiles/
 ├── .config -> ~/.config           - configuration files for various services
 ├── .local -> ~/.local             - local data files for various services
