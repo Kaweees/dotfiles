@@ -26,7 +26,7 @@ This is my personal collection of configuration files. The [setup section](#inst
 
 [![NixOS][NixOS-shield]][NixOS-url]
 
-### Thanks for dropping by!
+### Thanks for dropping by
 
 <img src="assets/img/screenshot.png" alt="Screenshot of my desktop" align="right" width="400px">
 
@@ -87,7 +87,7 @@ To get a local copy of my dotfiles up and running on your machine, follow these 
 
 ## License
 
-The source code for my website is distributed under the terms of the GNU General Public License v3.0, as I firmly believe that collaborating on free and open-source software fosters innovations that mutually and equitably beneficial to both collaborators and users alike. See [`LICENSE`](./LICENSE) for details and more information.
+The source code for my dotfiles is distributed under the terms of the GNU General Public License v3.0, as I firmly believe that collaborating on free and open-source software fosters innovations that mutually and equitably beneficial to both collaborators and users alike. See [`LICENSE`](./LICENSE) for details and more information.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
