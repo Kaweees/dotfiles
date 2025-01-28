@@ -3,6 +3,9 @@
 {
   inputs,
   outputs,
+  username,
+  host,
+  stateVersion,
   lib,
   config,
   pkgs,
@@ -46,8 +49,9 @@
   };
 
   home = {
-    username = "kaweees";
-    homeDirectory = "/home/kaweees";
+    username = username;
+    homeDirectory = "/home/${username}";
+    stateVersion = stateVersion;
   };
 
   # Add stuff for your user as you see fit:
@@ -62,5 +66,5 @@
   systemd.user.startServices = "sd-switch";
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  home.stateVersion = "23.05";
+  home.stateVersion = stateVersion;
 }

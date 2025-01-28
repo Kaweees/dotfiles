@@ -3,6 +3,9 @@
 {
   inputs,
   outputs,
+  username,
+  host,
+  stateVersion,
   lib,
   config,
   pkgs,
@@ -17,12 +20,25 @@
     # inputs.hardware.nixosModules.common-cpu-amd
     # inputs.hardware.nixosModules.common-ssd
 
-    # You can also split up your configuration and import pieces of it here:
-    # ./users.nix
+    # Import users
+    ./users.nix
 
-    # Import your generated (nixos-generate-config) hardware configuration
+    # Import generated (nixos-generate-config) hardware configuration
     ./hardware-configuration.nix
   ];
+
+  # System configuration
+  boot.loader.grub.enable = true;
+  boot.loader.grub.device = "/dev/nvme0n1";
+  boot.loader.grub.useOSProber = true;
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
+  # Network configuration
+  networking = {
+    hostName = "${host}";
+    networkmanager.enable = true;
+  };
 
   nixpkgs = {
     # You can add overlays here
@@ -68,40 +84,45 @@
     nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
   };
 
-  # Set the hostname
-  networking.hostName = "kaweees-aero";
-
-  users.users = {
-    kaweees = {
-      initialPassword = "kaweees";
-      isNormalUser = true;
-      description = "main user";
-      shell = pkgs.zsh;
-      openssh.authorizedKeys.keys = [
-        # TODO: Add your SSH public key(s) here, if you plan on using SSH to connect
-      ];
-      # TODO: Be sure to add any other groups you need (such as networkmanager, audio, docker, etc)
-      extraGroups = ["wheel"];
-    };
+  # Security
+  security.sudo = {
+    enable = true; # Enable sudo with wheel group
+    wheelNeedsPassword = false; # Allow sudo without password for wheel group
   };
 
-  # Enable sudo with wheel group
-  security.sudo.enable = true;
-  security.sudo.wheelNeedsPassword = false;
-
-  # This setups a SSH server. Very important if you're setting up a headless system.
-  # Feel free to remove if you don't need it.
+  # Enable SSH server
   services.openssh = {
-    enable = true;
+    enable = true; # Enable SSH server
     settings = {
-      # Opinionated: forbid root login through SSH.
+      # Forbid root login through SSH.
       PermitRootLogin = "no";
-      # Opinionated: use keys only.
+      # Use keys only.
       # Remove if you want to SSH using passwords
       PasswordAuthentication = false;
     };
   };
 
+  # System packages
+  environment.systemPackages = with pkgs; [
+    # Reference from existing config
+    git
+    zsh
+    neovim
+    tmux
+    alacritty
+    rofi
+    feh
+    dunst
+    picom
+  ];
+
+  # X11 configuration
+  services.xserver = {
+    enable = true;
+    displayManager.defaultSession = "none+dwm";
+    windowManager.dwm.enable = true;
+  };
+
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  system.stateVersion = "23.05";
+  system.stateVersion = stateVersion;
 }

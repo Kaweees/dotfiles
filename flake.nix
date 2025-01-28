@@ -32,6 +32,7 @@
         host = "aero";
       }
     ];
+    stateVersion = "23.05";
     inherit (self) outputs;
     # Supported systems for your flake packages, shell, etc.
     systems = [
@@ -71,17 +72,26 @@
         value = nixpkgs.lib.nixosSystem {
           inherit system;
           specialArgs = {
-            inherit inputs outputs username host;
+            inherit inputs outputs username host stateVersion;
           };
           modules = [
             # > Our main nixos configuration file <
             ./hosts/${host}/configuration.nix
             # Add home-manager configuration
             home-manager = {
-              useGlobalPkgs = true;
               useUserPackages = true;
-              users.${username} = import ./hosts/${host}/home.nix;
-            }
+              useGlobalPkgs = true;
+              extraSpecialArgs = { inherit inputs username host; };
+              users.${username} = {
+                imports = [ ./hosts/${host}/home.nix ];
+                home = {
+                  username = "${username}";
+                  homeDirectory = "/home/${username}";
+                  stateVersion = stateVersion;
+                };
+                programs.home-manager.enable = true;
+              };
+            };
           ];
         }
       };
@@ -97,7 +107,7 @@
         value = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${system}; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = {
-            inherit inputs outputs username host;
+            inherit inputs outputs username host stateVersion;
           };
           modules = [ ./hosts/${host}/home.nix ];
         };
