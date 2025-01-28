@@ -55,7 +55,7 @@ Before attempting to build this project, make sure you have [git](https://mccd.s
 
 ### Installation
 
-> [!WARNING]  
+> [!WARNING]
 > You can clone my dotfiles wherever you want, but some configurations expect it to be in `~/Documents/GitHub/dotfiles`. Change at your own risk.
 
 To get a local copy of my dotfiles up and running on your machine, follow these simple steps:
@@ -92,19 +92,19 @@ To get a local copy of my dotfiles up and running on your machine, follow these 
    + If you are on an installed system
 
       ```sh
-      sudo nixos-rebuild switch --flake .#kaweees-aero --no-root-passwd /etc/nixos#default
+      sudo nixos-rebuild switch --flake --no-root-passwd .#default
       ```
 
    + If you are on a live installation medium
 
       ```sh
-      nixos-install --flake .#kaweees-aero --no-root-passwd && reboot
+      nixos-install --flake --no-root-passwd .#default  && reboot
       ```
 
 6. Change the password for the user
 
    ```sh
-   passwd kaweees
+   passwd <username>
    ```
 
 <!-- PROJECT FILE STRUCTURE -->
