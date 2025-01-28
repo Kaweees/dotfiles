@@ -54,61 +54,38 @@
     homeManagerModules = import ./modules/home-manager;
 
     # NixOS configuration entrypoint
-    # Available through 'nixos-rebuild --flake .#your-hostname'
-    nixosConfigurations = {
-      default = nixpkgs.lib.nixosSystem {
+    # Available through 'nixos-rebuild --flake .#<hostname>'
+    nixosConfigurations = builtins.listToAttrs (map (host: {
+      name = "${username}@${host}";
+      value = nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = {
-          host = "default";
+          host = host;
           inherit inputs outputs username;
         };
         modules = [
           # > Our main nixos configuration file <
-          ./hosts/default/configuration.nix
+          ./hosts/${host}/configuration.nix
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.user = import ./hosts/default/home.nix;
+            home-manager.users.user = import ./hosts/${host}/home.nix;
           }
         ];
       };
-
-      aero = nixpkgs.lib.nixosSystem {
-        inherit system;
-        specialArgs = {
-          host = "aero";
-          inherit inputs outputs username;
-        };
-        modules = [
-          ./hosts/aero/configuration.nix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.user = import ./hosts/aero/home.nix;
-          }
-        ];
-      };
-    };
+    }) hosts);
 
     # Standalone home-manager configuration entrypoint
-    # Available through 'home-manager --flake .#your-username@your-hostname'
-    homeConfigurations = {
-      "${username}@default" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-        extraSpecialArgs = {inherit inputs outputs;};
-        modules = [
-          # > Our main home-manager configuration file <
-          ./hosts/default/home.nix
-        ];
-      };
-      "${username}@aero" = home-manager.lib.homeManagerConfiguration {
+    # Available through 'home-manager --flake .#<username>@<hostname>'
+    homeConfigurations = builtins.listToAttrs (map (host: {
+      name = "${username}@${host}";
+      value = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
         extraSpecialArgs = {inherit inputs outputs;};
-        modules = [ ./hosts/aero/home.nix ];
+        modules = [ ./hosts/${host}/home.nix ];
       };
-    };
+    }) hosts);
   };
 }
 
