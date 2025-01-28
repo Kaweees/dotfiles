@@ -60,17 +60,16 @@
       value = nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = {
-          host = host;
-          inherit inputs outputs username;
+          inherit inputs outputs username host;
         };
         modules = [
           # > Our main nixos configuration file <
           ./hosts/${host}/configuration.nix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.user = import ./hosts/${host}/home.nix;
+          # Add home-manager configuration
+          home-manager = {
+            useGlobalPkgs = true;
+            useUserPackages = true;
+            users.${username} = import ./hosts/${host}/home.nix;
           }
         ];
       };
@@ -81,11 +80,10 @@
     homeConfigurations = builtins.listToAttrs (map (host: {
       name = "${username}@${host}";
       value = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        extraSpecialArgs = {inherit inputs outputs;};
+        pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+        extraSpecialArgs = {inherit inputs outputs username host;};
         modules = [ ./hosts/${host}/home.nix ];
       };
     }) hosts);
   };
 }
-
