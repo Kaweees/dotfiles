@@ -10,8 +10,10 @@
     # Also see the 'unstable-packages' overlay at 'overlays/default.nix'.
 
     # Home manager
-    home-manager.url = "github:nix-community/home-manager/release-23.11";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager = {
+      url = "github:nix-community/home-manager/release-23.11";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -20,6 +22,8 @@
     home-manager,
     ...
   } @ inputs: let
+    username = "kaweees";
+    hosts = [ "default" "aero" ];
     inherit (self) outputs;
     # Supported systems for your flake packages, shell, etc.
     systems = [
@@ -52,27 +56,59 @@
     # NixOS configuration entrypoint
     # Available through 'nixos-rebuild --flake .#your-hostname'
     nixosConfigurations = {
-      kaweees-aero = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs outputs;};
+      default = nixpkgs.lib.nixosSystem {
+        inherit system;
+        specialArgs = {
+          host = "default";
+          inherit inputs outputs username;
+        };
         modules = [
           # > Our main nixos configuration file <
-          ./nixos/configuration.nix
+          ./hosts/default/configuration.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.user = import ./hosts/default/home.nix;
+          }
+        ];
+      };
+
+      aero = nixpkgs.lib.nixosSystem {
+        inherit system;
+        specialArgs = {
+          host = "aero";
+          inherit inputs outputs username;
+        };
+        modules = [
+          ./hosts/aero/configuration.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.user = import ./hosts/aero/home.nix;
+          }
         ];
       };
     };
 
     # Standalone home-manager configuration entrypoint
-    # Available through 'home-manager --flake .#kaweees@kaweees-aero'
+    # Available through 'home-manager --flake .#your-username@your-hostname'
     homeConfigurations = {
-      "kaweees@kaweees-aero" = home-manager.lib.homeManagerConfiguration {
-        # TODO replace x86_64-linux with your architecture
+      "${username}@default" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
         extraSpecialArgs = {inherit inputs outputs;};
         modules = [
           # > Our main home-manager configuration file <
-          ./home-manager/home.nix
+          ./hosts/default/home.nix
         ];
+      };
+      "${username}@aero" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        extraSpecialArgs = {inherit inputs outputs;};
+        modules = [ ./hosts/aero/home.nix ];
       };
     };
   };
 }
+
