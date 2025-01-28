@@ -22,8 +22,16 @@
     home-manager,
     ...
   } @ inputs: let
-    username = "kaweees";
-    hosts = [ "default" "aero" ];
+    devices = [
+      {
+        username = "kaweees";
+        host = "default";
+      }
+      {
+        username = "kaweees";
+        host = "aero";
+      }
+    ];
     inherit (self) outputs;
     # Supported systems for your flake packages, shell, etc.
     systems = [
@@ -55,35 +63,45 @@
 
     # NixOS configuration entrypoint
     # Available through 'nixos-rebuild --flake .#<hostname>'
-    nixosConfigurations = builtins.listToAttrs (map (host: {
-      name = "${username}@${host}";
-      value = nixpkgs.lib.nixosSystem {
-        inherit system;
-        specialArgs = {
-          inherit inputs outputs username host;
-        };
-        modules = [
-          # > Our main nixos configuration file <
-          ./hosts/${host}/configuration.nix
-          # Add home-manager configuration
-          home-manager = {
-            useGlobalPkgs = true;
-            useUserPackages = true;
-            users.${username} = import ./hosts/${host}/home.nix;
-          }
-        ];
+    nixosConfigurations = builtins.listToAttrs (map (device: {
+      let username = device.username;
+      let host = device.host;
+      in {
+        name = "${username}@${host}";
+        value = nixpkgs.lib.nixosSystem {
+          inherit system;
+          specialArgs = {
+            inherit inputs outputs username host;
+          };
+          modules = [
+            # > Our main nixos configuration file <
+            ./hosts/${host}/configuration.nix
+            # Add home-manager configuration
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              users.${username} = import ./hosts/${host}/home.nix;
+            }
+          ];
+        }
       };
-    }) hosts);
+    }) devices);
 
     # Standalone home-manager configuration entrypoint
     # Available through 'home-manager --flake .#<username>@<hostname>'
-    homeConfigurations = builtins.listToAttrs (map (host: {
-      name = "${username}@${host}";
-      value = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-        extraSpecialArgs = {inherit inputs outputs username host;};
-        modules = [ ./hosts/${host}/home.nix ];
+    homeConfigurations = builtins.listToAttrs (map (device: {
+      let username = device.username;
+      let host = device.host;
+      in {
+        name = "${username}@${host}";
+        value = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.${system}; # Home-manager requires 'pkgs' instance
+          extraSpecialArgs = {
+            inherit inputs outputs username host;
+          };
+          modules = [ ./hosts/${host}/home.nix ];
+        };
       };
-    }) hosts);
+    }) devices);
   };
 }
