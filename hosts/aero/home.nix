@@ -47,19 +47,15 @@
       allowUnfree = true;
     };
   };
-
   home = {
     username = username;
     homeDirectory = "/home/${username}";
-    stateVersion = stateVersion;
-  };
 
-  home.file = let
-    dotfilesDir = ../../.config;
-    homeDir = "/home/${username}";
-  in {
-    # Symlink configuration files
-    home.file = {
+    file = let
+      dotfilesDir = ../../.config;
+      homeDir = "/home/${username}";
+    in {
+      # Symlink configuration files
       "htop" = {
         source = "${dotfilesDir}/htop";
         target = "${homeDir}/.config/htop";
