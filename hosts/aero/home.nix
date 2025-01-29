@@ -51,6 +51,13 @@
     username = username;
     homeDirectory = "/home/${username}";
 
+    # targets.genericLinux.enable = true; # ENABLE THIS ON NON NIXOS SYSTEMS
+
+    sessionVariables = {
+      EDITOR = "nvim";
+      GIT_EDITOR = "nvim";
+    };
+
     file = let
       dotfilesDir = ../../.config;
       homeDir = "/home/${username}";
@@ -99,7 +106,7 @@
     };
   };
 
-  # Enable home-manager and git
+  # Enable home-manager
   programs.home-manager.enable = true;
 
   # Nicely reload system units when changing configs

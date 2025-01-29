@@ -14,8 +14,6 @@
   imports = [
     # If you want to use modules your own flake exports (from modules/nixos):
     # outputs.nixosModules.example
-    ../../modules/home-manager/core
-    ../../modules/home-manager/home
     inputs.home-manager.nixosModules.home-manager
 
     # Or modules from other flakes (such as nixos-hardware):
@@ -32,13 +30,9 @@
   home-manager = {
     useUserPackages = true;
     useGlobalPkgs = true;
-    extraSpecialArgs = { inherit inputs username host; };
+    extraSpecialArgs = {inherit inputs username host;};
     users.${username} = {
-      imports = [ ./../home ];
-      home.username = "${username}";
-      home.homeDirectory = "/home/${username}";
-      home.stateVersion = "24.05";
-      programs.home-manager.enable = true;
+      imports = [./home.nix];
     };
   };
 
