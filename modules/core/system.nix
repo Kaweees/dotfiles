@@ -57,7 +57,7 @@
     nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
   };
   nixpkgs = {
-    overlays = [ inputs.nur.overlays.default ];
+    overlays = [inputs.nur.overlays.default];
   };
 
   # System packages

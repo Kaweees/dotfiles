@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{pkgs, ...}:
 # Bootloader configuration
 {
   boot.loader.timeout = 10;

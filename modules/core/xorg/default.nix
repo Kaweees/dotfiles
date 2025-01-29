@@ -5,5 +5,5 @@
     ./dwm.nix
   ];
 
-  fonts.fonts = with pkgs; [ maple-mono fira-code ];
+  fonts.fonts = with pkgs; [maple-mono fira-code];
 }

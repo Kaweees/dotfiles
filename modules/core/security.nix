@@ -1,4 +1,4 @@
-{ ... }:
+{...}:
 # Security configuration
 {
   security = {
@@ -9,4 +9,3 @@
     rtkit.enable = true;
   };
 }
-

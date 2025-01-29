@@ -1,8 +1,10 @@
-{ config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
   # Enable NVIDIA proprietary drivers
-  services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.videoDrivers = ["nvidia"];
 
   hardware = {
     # NVIDIA Configuration
@@ -33,20 +35,20 @@
       enable = true;
       driSupport = true;
       driSupport32Bit = true;
-      extraPackages = with pkgs; [ intel-media-driver intel-compute-runtime ];
+      extraPackages = with pkgs; [intel-media-driver intel-compute-runtime];
     };
   };
 
   # Kernel configuration
   boot = {
-    kernelModules = [ "i915" "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
+    kernelModules = ["i915" "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm"];
     kernelParams = [
       "nvidia-drm.modeset=1" # Required for PRIME sync
       "i915.force_probe=46a6" # Force probe Intel 12th Gen GPU
       "pcie_aspm=force" # Better power management
     ];
     # Enable early KMS for NVIDIA
-    initrd.kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
+    initrd.kernelModules = ["nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm"];
   };
 
   # Environment variables for NVIDIA

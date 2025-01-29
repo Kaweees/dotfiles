@@ -1,6 +1,9 @@
 # X11 and Suckless configuration
-{ pkgs, username, ... }:
-let
+{
+  pkgs,
+  username,
+  ...
+}: let
   xinitrcContent = builtins.readFile ./xorg/.xinitrc;
   xresourcesContent = builtins.readFile ./config/xorg/.Xresources;
 in {

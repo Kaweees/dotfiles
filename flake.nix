@@ -67,51 +67,56 @@
     # NixOS configuration entrypoint
     # Available through 'nixos-rebuild --flake .#<hostname>'
     nixosConfigurations = builtins.listToAttrs (map (device: {
-      name = "${device.username}@${device.host}";
-      value = nixpkgs.lib.nixosSystem {
-        system = device.system;
-        specialArgs = {
-          inherit inputs outputs stateVersion;
-          username = device.username;
-          host = device.host;
-        };
-        modules = [
-          # > Our main nixos configuration file <
-          ./hosts/${device.host}/configuration.nix
-          # Add home-manager configuration
-          home-manager.nixosModules.home-manager {
-            useUserPackages = true;
-            useGlobalPkgs = true;
-            extraSpecialArgs = {
-              inherit inputs; username = device.username; host = device.host;
-            };
-            users.${device.username} = {
-              imports = [ ./hosts/${device.host}/home.nix ];
-              home = {
-                username = "${device.username}";
-                homeDirectory = "/home/${device.username}";
-                stateVersion = stateVersion;
+        name = "${device.username}@${device.host}";
+        value = nixpkgs.lib.nixosSystem {
+          system = device.system;
+          specialArgs = {
+            inherit inputs outputs stateVersion;
+            username = device.username;
+            host = device.host;
+          };
+          modules = [
+            # > Our main nixos configuration file <
+            ./hosts/${device.host}/configuration.nix
+            # Add home-manager configuration
+            home-manager.nixosModules.home-manager
+            {
+              useUserPackages = true;
+              useGlobalPkgs = true;
+              extraSpecialArgs = {
+                inherit inputs;
+                username = device.username;
+                host = device.host;
               };
-              programs.home-manager.enable = true;
-            };
-          }
-        ];
-      };
-    }) devices);
+              users.${device.username} = {
+                imports = [./hosts/${device.host}/home.nix];
+                home = {
+                  username = "${device.username}";
+                  homeDirectory = "/home/${device.username}";
+                  stateVersion = stateVersion;
+                };
+                programs.home-manager.enable = true;
+              };
+            }
+          ];
+        };
+      })
+      devices);
 
     # Standalone home-manager configuration entrypoint
     # Available through 'home-manager --flake .#<username>@<hostname>'
     homeConfigurations = builtins.listToAttrs (map (device: {
-      name = "${device.username}@${device.host}";
-      value = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${device.system}; # Home-manager requires 'pkgs' instance
-        extraSpecialArgs = {
-          inherit inputs outputs stateVersion;
-          username = device.username;
-          host = device.host;
+        name = "${device.username}@${device.host}";
+        value = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.${device.system}; # Home-manager requires 'pkgs' instance
+          extraSpecialArgs = {
+            inherit inputs outputs stateVersion;
+            username = device.username;
+            host = device.host;
+          };
+          modules = [./hosts/${device.host}/home.nix];
         };
-        modules = [ ./hosts/${device.host}/home.nix ];
-      };
-    }) devices);
+      })
+      devices);
   };
 }

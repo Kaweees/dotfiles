@@ -5,9 +5,7 @@
   username,
   host,
   ...
-}:
-
-{
+}: {
   # User configuration
   users.users.${username} = {
     initialPassword = "${username}";
@@ -25,5 +23,5 @@
   };
 
   # Allow user to use nix
-  nix.settings.allowed-users = [ "${username}" ];
+  nix.settings.allowed-users = ["${username}"];
 }

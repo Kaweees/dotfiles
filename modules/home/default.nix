@@ -1,4 +1,9 @@
-{inputs, username, host, ...}: {
+{
+  inputs,
+  username,
+  host,
+  ...
+}: {
   imports = [
     ./vscode.nix # code editor
     ./fzf.nix # fuzzy finder
@@ -13,4 +18,3 @@
     docker-compose
   ];
 }
-

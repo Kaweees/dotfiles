@@ -1,4 +1,8 @@
-{ inputs, pkgs, ... }:
+{
+  inputs,
+  pkgs,
+  ...
+}:
 # GitHub CLI configuration
 {
   programs.gh = {

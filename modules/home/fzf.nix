@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   programs.fzf = {
     enable = true;
 
@@ -25,5 +24,5 @@
       "--info='right'"
     ];
   };
-  environment.systemPackages = with pkgs; [ fzf ];
+  environment.systemPackages = with pkgs; [fzf];
 }

@@ -28,10 +28,56 @@
         - name: Format Nix code
           run: |
             nix fmt
+        - name: Update flake.lock
+          run: nix flake update
         - name: Commit changes
           uses: EndBug/add-and-commit@v9
           with:
             author_name: ${{ github.actor }}
             author_email: ${{ github.actor }}@users.noreply.github.com
-            message: "Code formatting and linting"
+            message: "Code formatting and flake update"
             add: "." # Add all files
+        - name: Cache Nix store
+          uses: actions/cache@v4
+          env:
+            cache-name: cache-nix-store
+          with:
+            path: |
+              /nix/store
+              ~/.cache/nix
+            key: ${{ runner.os }}-nix-${{ env.cache-name }}-${{ hashFiles('flake.lock') }}
+            restore-keys: |
+              ${{ runner.os }}-nix-${{ env.cache-name }}-
+    build:
+      runs-on: ubuntu-latest
+      needs: format
+      steps:
+        - run: lsb_release -a
+        - run: uname -a
+        - name: Check out Repository Code
+          uses: actions/checkout@v4
+          with:
+            submodules: true # Fetch submodules
+            fetch-depth: 0 # Fetch all history for .GitInfo and .Lastmod
+        - name: Install Nix with flakes support
+          uses: cachix/install-nix-action@v22
+          with:
+            extra_nix_config: |
+              experimental-features = nix-command flakes
+        - name: Verify Nix version
+          run: nix --version
+        - name: Show flake outputs
+          run: nix flake show
+        - name: Build system configuration
+          run: nix build .#nixosConfigurations.aero.config.system.build.toplevel
+        - name: Cache Nix store
+          uses: actions/cache@v4
+          env:
+            cache-name: cache-nix-store
+          with:
+            path: |
+              /nix/store
+              ~/.cache/nix
+            key: ${{ runner.os }}-nix-${{ env.cache-name }}-${{ hashFiles('flake.lock') }}
+            restore-keys: |
+              ${{ runner.os }}-nix-${{ env.cache-name }}-

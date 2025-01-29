@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{pkgs, ...}:
 # Git configuration
 {
   programs.git = {
@@ -24,5 +24,5 @@
       };
     };
   };
-  home.packages = [ pkgs.git ]; # pkgs.git-lfs
+  home.packages = [pkgs.git]; # pkgs.git-lfs
 }

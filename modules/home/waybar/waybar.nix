@@ -1,10 +1,10 @@
-{ pkgs, ... }:
+{pkgs, ...}:
 # Status bar configuration
 {
   programs.waybar = {
     enable = true;
   };
   programs.waybar.package = pkgs.waybar.overrideAttrs (oldAttrs: {
-    mesonFlags = (oldAttrs.mesonFlags or [ ]) ++ [ "-Dexperimental=true" ];
+    mesonFlags = (oldAttrs.mesonFlags or []) ++ ["-Dexperimental=true"];
   });
 }

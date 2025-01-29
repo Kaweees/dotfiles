@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{pkgs, ...}:
 # Pipewire configuration
 {
   sound.enable = true;
@@ -10,5 +10,5 @@
     pulse.enable = true;
     jack.enable = true;
   };
-  environment.systemPackages = with pkgs; [ pulseaudioFull ];
+  environment.systemPackages = with pkgs; [pulseaudioFull];
 }
