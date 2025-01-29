@@ -64,14 +64,10 @@
   environment.systemPackages = with pkgs; [
     wget
     git
-    zsh
-    neovim
-    tmux
-    alacritty
-    rofi
     feh
-    dunst
     picom
+    maple-mono
+    fira-code
   ];
 
   time.timeZone = "America/Los_Angeles";

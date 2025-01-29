@@ -17,4 +17,6 @@
     ./user.nix
     ./virtualization.nix
   ];
+
+  fonts.fonts = with pkgs; [ maple-mono fira-code ];
 }
