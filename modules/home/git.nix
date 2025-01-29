@@ -24,9 +24,5 @@
       };
     };
   };
-  environment.systemPackages = with pkgs; [
-    git
-  ];
-
   home.packages = [ pkgs.git ]; # pkgs.git-lfs
 }
