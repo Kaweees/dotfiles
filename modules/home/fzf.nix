@@ -25,4 +25,5 @@
       "--info='right'"
     ];
   };
+  environment.systemPackages = with pkgs; [ fzf ];
 }
