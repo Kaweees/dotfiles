@@ -7,14 +7,7 @@
       enable = true;
       exportConfiguration = true;
       xkb.layout = "us";
-      windowManager.dwm = {
-        enable = true;
-        package = pkgs.dwm.overrideAttrs (oldAttrs: {
-          src = ../config/dwm;
-        });
-      };
-      # Enable Nvidia drivers
-      videoDrivers = [ "nvidia" ];
+      dpi = 192; # For high-resolution displays
     };
 
     displayManager.autoLogin = {
@@ -28,7 +21,6 @@
   # To prevent getting stuck at shutdown
   systemd.extraConfig = "DefaultTimeoutStopSec=10s";
   environment.systemPackages = with pkgs; [
-    dwm
     xorg.xinit
     xorg.xmodmap
     xorg.xsetroot

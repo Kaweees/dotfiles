@@ -57,6 +57,7 @@
       LIBVA_DRIVER_NAME = "nvidia"; # For hardware video acceleration
       NVD_BACKEND = "direct"; # Direct rendering mode
       WLR_NO_HARDWARE_CURSORS = "1"; # For Wayland compositors
+      NIXOS_OZONE_WL = "1"; # Hint electron apps to use wayland
     };
     systemPackages = with pkgs; [
       nvtop-nvidia # GPU monitoring
@@ -69,14 +70,6 @@
     # For Intel CPU power management
     thermald.enable = true;
     power-profiles-daemon.enable = true;
-
-    # Enable X11 and NVIDIA settings
-    xserver = {
-      enable = true;
-      layout = "us";
-      displayManager.sddm.enable = true;
-      desktopManager.plasma5.enable = true; # Example with KDE Plasma
-    };
   };
 
   # System-wide packages
@@ -90,7 +83,4 @@
   # Hardware acceleration
   nixpkgs.config.firefox.enablePlasmaBrowserIntegration = true;
   hardware.enableRedistributableFirmware = true;
-
-  # Optional: For high-resolution displays
-  services.xserver.dpi = 192; # Adjust based on your display
 }
