@@ -62,6 +62,7 @@
     systemPackages = with pkgs; [
       nvtop-nvidia # GPU monitoring
       cudaPackages.cuda_nvcc # CUDA tools (optional)
+      pkgs
     ];
   };
 
