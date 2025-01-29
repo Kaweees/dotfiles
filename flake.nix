@@ -65,8 +65,9 @@
     # NixOS configuration entrypoint
     # Available through 'nixos-rebuild --flake .#<hostname>'
     nixosConfigurations = builtins.listToAttrs (map (device: {
-      let username = device.username;
-      let host = device.host;
+      let
+        username = device.username;
+        host = device.host;
       in {
         name = "${username}@${host}";
         value = nixpkgs.lib.nixosSystem {
@@ -93,15 +94,16 @@
               };
             };
           ];
-        }
+        };
       };
     }) devices);
 
     # Standalone home-manager configuration entrypoint
     # Available through 'home-manager --flake .#<username>@<hostname>'
     homeConfigurations = builtins.listToAttrs (map (device: {
-      let username = device.username;
-      let host = device.host;
+      let
+        username = device.username;
+        host = device.host;
       in {
         name = "${username}@${host}";
         value = home-manager.lib.homeManagerConfiguration {
