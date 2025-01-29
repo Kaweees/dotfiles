@@ -54,6 +54,55 @@
     stateVersion = stateVersion;
   };
 
+  let
+    dotfilesDir = ../../.config;
+    homeDir = "/home/${username}";
+  in
+
+  # Symlink configuration files
+  home.file = {
+    "htop" = {
+      source = "${dotfilesDir}/htop";
+      target = "${homeDir}/.config/htop";
+    };
+    "nvim" = {
+      source = "${dotfilesDir}/nvim";
+      target = "${homeDir}/.config/nvim";
+    };
+    "picom" = {
+      source = "${dotfilesDir}/picom";
+      target = "${homeDir}/.config/picom";
+    };
+    "tmux": {
+      source = "${dotfilesDir}/tmux";
+      target = "${homeDir}/.config/tmux";
+    },
+    "xorg" = {
+      source = "${dotfilesDir}/xorg";
+      target = "${homeDir}";
+    };
+    "zsh" = {
+      source = "${dotfilesDir}/zsh";
+      target = "${homeDir}";
+    };
+    "wallpapers" = {
+      source = "${dotfilesDir}/wallpapers";
+      target = "${homeDir}/.config/wallpapers";
+    };
+    "scripts" = {
+      source = "${dotfilesDir}/scripts";
+      target = "${homeDir}/.scripts";
+    };
+    "dunst" = {
+      source = "${dotfilesDir}/dunst";
+      target = "${homeDir}/.config/dunst";
+    };
+    "rofi" = {
+      source = "${dotfilesDir}/rofi";
+      target = "${homeDir}/.config/rofi";
+    };
+  };
+
   # Add stuff for your user as you see fit:
   # programs.neovim.enable = true;
   # home.packages = with pkgs; [ steam ];
