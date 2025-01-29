@@ -1,11 +1,7 @@
+# Add your reusable home-manager modules to this directory, on their own file (https://nixos.wiki/wiki/Module).
+# These should be stuff you would like to share with others, not your personal configurations.
 {
-  inputs,
-  username,
-  host,
-  ...
-}: {
-  imports = [
-    ../core/default.nix
-    ../home/default.nix
-  ];
+  # List your module files here
+  core = import ./core/default.nix;
+  home = import ./home/default.nix;
 }

@@ -61,7 +61,6 @@
   # System packages
   environment.systemPackages = with pkgs; [
     wget
-    git
     feh
     picom
     maple-mono

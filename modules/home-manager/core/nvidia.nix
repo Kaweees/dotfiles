@@ -32,7 +32,12 @@
       enable = true;
       driSupport = true;
       driSupport32Bit = true;
-      extraPackages = with pkgs; [intel-media-driver intel-compute-runtime];
+      extraPackages = with pkgs; [
+        intel-media-driver
+        (vaapiIntel.override {enableHybridCodec = true;})
+        vaapiVdpau
+        libvdpau-va-gl
+      ];
     };
   };
 
@@ -59,7 +64,6 @@
       NIXOS_OZONE_WL = "1"; # Hint electron apps to use wayland
     };
     systemPackages = with pkgs; [
-      nvtop-nvidia # GPU monitoring
       cudaPackages.cuda_nvcc # CUDA tools (optional)
       vulkan-loader
       vulkan-validation-layers
@@ -72,10 +76,5 @@
   services = {
     # For Intel CPU power management
     thermald.enable = true;
-    power-profiles-daemon.enable = true;
   };
-
-  # Hardware acceleration
-  nixpkgs.config.firefox.enablePlasmaBrowserIntegration = true;
-  hardware.enableRedistributableFirmware = true;
 }

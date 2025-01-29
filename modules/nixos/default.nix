@@ -2,6 +2,5 @@
 # These should be stuff you would like to share with others, not your personal configurations.
 {
   # List your module files here
-  core = import ./core/default.nix;
-  home = import ./home/default.nix;
+  # my-module = import ./my-module.nix;
 }

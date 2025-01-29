@@ -5,7 +5,7 @@
     enable = true;
     package = pkgs.vscode.fhs;
   };
-  home.packages = with pkgs; [
+  environment.systemPackages = with pkgs; [
     code-cursor
   ];
 }

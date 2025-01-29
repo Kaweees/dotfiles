@@ -14,8 +14,9 @@
   imports = [
     # If you want to use modules your own flake exports (from modules/nixos):
     # outputs.nixosModules.example
-    outputs.nixosModules.core
-    outputs.nixosModules.home
+    ../../modules/home-manager/core
+    ../../modules/home-manager/home
+    inputs.home-manager.nixosModules.home-manager
 
     # Or modules from other flakes (such as nixos-hardware):
     # inputs.hardware.nixosModules.common-cpu-amd
@@ -27,6 +28,19 @@
     # Import generated (nixos-generate-config) hardware configuration
     ./hardware-configuration.nix
   ];
+
+  home-manager = {
+    useUserPackages = true;
+    useGlobalPkgs = true;
+    extraSpecialArgs = { inherit inputs username host; };
+    users.${username} = {
+      imports = [ ./../home ];
+      home.username = "${username}";
+      home.homeDirectory = "/home/${username}";
+      home.stateVersion = "24.05";
+      programs.home-manager.enable = true;
+    };
+  };
 
   nix = let
     flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
