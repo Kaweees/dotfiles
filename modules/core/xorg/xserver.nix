@@ -1,19 +1,26 @@
-{ pkgs, username, ... }:
 # X11 and Suckless configuration
-{
+{ pkgs, username, ... }:
+let
+  xinitrcContent = builtins.readFile ./xorg/.xinitrc;
+  xresourcesContent = builtins.readFile ./config/xorg/.Xresources;
+in {
   services = {
     xserver = {
       # Enable the X11 windowing system.
       enable = true;
       exportConfiguration = true;
       xkb.layout = "us";
-      dpi = 192; # For high-resolution displays
+      xresources = xresourcesContent;
     };
 
-    displayManager.autoLogin = {
-      enable = true;
-      user = "${username}";
+    displayManager = {
+      startupScript = xinitrcContent;
+      autoLogin = {
+        enable = true;
+        user = "${username}";
+      };
     };
+
     libinput = {
       enable = true;
     };
@@ -24,5 +31,11 @@
     xorg.xinit
     xorg.xmodmap
     xorg.xsetroot
+    dunst
+    picom
+    xrdb
+    autorandr
+    numlockx
+    slstatus
   ];
 }

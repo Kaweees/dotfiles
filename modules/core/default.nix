@@ -6,16 +6,18 @@
   imports = [
     ./bootloader.nix
     ./hardware.nix
-    ./xserver.nix
+    ./xorg.nix # Xorg-based desktop environment
     ./network.nix
     ./nvidia.nix
     ./pipewire.nix
     ./program.nix
     ./security.nix
+    ./services.nix
     ./system.nix
     ./flatpak.nix
     ./user.nix
     ./virtualization.nix
+    # ./wayland.nix # Wayland-based desktop environment
   ];
 
   fonts.fonts = with pkgs; [ maple-mono fira-code ];
