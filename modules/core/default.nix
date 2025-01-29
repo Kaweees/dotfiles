@@ -8,6 +8,7 @@
     ./hardware.nix
     ./xserver.nix
     ./network.nix
+    ./nvidia.nix
     ./pipewire.nix
     ./program.nix
     ./security.nix

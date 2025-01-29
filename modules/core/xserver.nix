@@ -13,6 +13,8 @@
           src = ../config/dwm;
         });
       };
+      # Enable Nvidia drivers
+      videoDrivers = [ "nvidia" ];
     };
 
     displayManager.autoLogin = {
