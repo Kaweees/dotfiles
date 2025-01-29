@@ -15,7 +15,7 @@
     # If you want to use modules your own flake exports (from modules/nixos):
     # outputs.nixosModules.example
     outputs.nixosModules.core
-    outputs.nixosModules.desktop
+    outputs.nixosModules.home
 
     # Or modules from other flakes (such as nixos-hardware):
     # inputs.hardware.nixosModules.common-cpu-amd

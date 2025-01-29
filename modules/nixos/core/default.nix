@@ -14,8 +14,7 @@
     ./services.nix
     ./system.nix
     ./flatpak.nix
-    ./user.nix
-    ./virtualization.nix
+    # ./virtualization.nix
     # ./wayland.nix # Wayland-based desktop environment
   ];
 
