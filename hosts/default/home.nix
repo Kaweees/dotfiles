@@ -3,9 +3,6 @@
 {
   inputs,
   outputs,
-  username,
-  host,
-  stateVersion,
   lib,
   config,
   pkgs,
@@ -14,7 +11,7 @@
   # You can import other home-manager modules here
   imports = [
     # If you want to use modules your own flake exports (from modules/home-manager):
-    outputs.homeManagerModules.default
+    # outputs.homeManagerModules.example
 
     # Or modules exported from other flakes (such as nix-colors):
     # inputs.nix-colors.homeManagerModules.default
@@ -48,59 +45,10 @@
     };
   };
 
+  # TODO: Set your username
   home = {
-    username = username;
-    homeDirectory = "/home/${username}";
-    stateVersion = stateVersion;
-  };
-
-  let
-    dotfilesDir = ../../.config;
-    homeDir = "/home/${username}";
-  in
-
-  # Symlink configuration files
-  home.file = {
-    "htop" = {
-      source = "${dotfilesDir}/htop";
-      target = "${homeDir}/.config/htop";
-    };
-    "nvim" = {
-      source = "${dotfilesDir}/nvim";
-      target = "${homeDir}/.config/nvim";
-    };
-    "picom" = {
-      source = "${dotfilesDir}/picom";
-      target = "${homeDir}/.config/picom";
-    };
-    "tmux": {
-      source = "${dotfilesDir}/tmux";
-      target = "${homeDir}/.config/tmux";
-    },
-    "xorg" = {
-      source = "${dotfilesDir}/xorg";
-      target = "${homeDir}";
-    };
-    "zsh" = {
-      source = "${dotfilesDir}/zsh";
-      target = "${homeDir}";
-    };
-    "wallpapers" = {
-      source = "${dotfilesDir}/wallpapers";
-      target = "${homeDir}/.config/wallpapers";
-    };
-    "scripts" = {
-      source = "${dotfilesDir}/scripts";
-      target = "${homeDir}/.scripts";
-    };
-    "dunst" = {
-      source = "${dotfilesDir}/dunst";
-      target = "${homeDir}/.config/dunst";
-    };
-    "rofi" = {
-      source = "${dotfilesDir}/rofi";
-      target = "${homeDir}/.config/rofi";
-    };
+    username = "your-username";
+    homeDirectory = "/home/your-username";
   };
 
   # Add stuff for your user as you see fit:
@@ -109,10 +57,11 @@
 
   # Enable home-manager and git
   programs.home-manager.enable = true;
+  programs.git.enable = true;
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  home.stateVersion = stateVersion;
+  home.stateVersion = "23.05";
 }
