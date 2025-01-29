@@ -1,4 +1,5 @@
 { pkgs, ... }:
+# Git configuration
 {
   programs.git = {
     enable = true;
@@ -23,6 +24,9 @@
       };
     };
   };
+  environment.systemPackages = with pkgs; [
+    git
+  ];
 
-  home.packages = [ pkgs.gh ]; # pkgs.git-lfs
+  home.packages = [ pkgs.git ]; # pkgs.git-lfs
 }
