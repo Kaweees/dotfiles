@@ -2,6 +2,7 @@
   inputs,
   username,
   host,
+  pkgs,
   ...
 }: {
   imports = [

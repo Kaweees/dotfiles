@@ -32,8 +32,6 @@
         - name: Format Nix code
           run: |
             nix fmt
-        - name: Update flake.lock
-          run: nix flake update
         - name: Commit changes
           uses: EndBug/add-and-commit@v9
           with:
@@ -41,16 +39,6 @@
             author_email: ${{ github.actor }}@users.noreply.github.com
             message: "Code formatting and flake update"
             add: "." # Add all files
-        - name: Cache Nix store
-          uses: actions/cache@v4
-          env:
-            cache-name: cache-nix-store
-          with:
-            path: |
-              /nix/store
-              ~/.cache/nix
-            key: ${{ runner.os }}-nix-${{ env.cache-name }}-${{ hashFiles('flake.lock') }}
-            restore-keys: |
-              ${{ runner.os }}-nix-${{ env.cache-name }}-
         - name: Build system configuration
           run: nix build .#nixosConfigurations.aero.config.system.build.toplevel
+          # run: nix build --show-trace .#nixosConfigurations.aero.config.system.build.toplevel

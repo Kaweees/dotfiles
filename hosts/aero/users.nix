@@ -19,7 +19,6 @@
       "networkmanager"
       "wheel"
     ];
-    shell = pkgs.zsh;
   };
 
   # Allow user to use nix

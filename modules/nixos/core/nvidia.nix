@@ -9,7 +9,7 @@
   hardware = {
     # NVIDIA Configuration
     nvidia = {
-      modesetting.enable = true; # Required for PRIME sync
+      modesetting.enable = true; # Required for PRIME sync (for wayland)
       powerManagement.enable = true; # GPU power management
       powerManagement.finegrained = true; # More aggressive power management
       open = false; # Keep closed source drivers
@@ -22,9 +22,6 @@
         intelBusId = "PCI:0:2:0";
         nvidiaBusId = "PCI:1:0:0";
       };
-
-      # Enable kernel modesetting for Wayland compatibility
-      modesetting.enable = true;
 
       # Enable experimental features if needed
       # experimentalFeatures.enable = true;
@@ -51,7 +48,7 @@
     initrd.kernelModules = ["nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm"];
   };
 
-  # Environment variables for NVIDIA
+  # Environment variables and packages for NVIDIA
   environment = {
     variables = {
       GBM_BACKEND = "nvidia-drm";
@@ -64,7 +61,10 @@
     systemPackages = with pkgs; [
       nvtop-nvidia # GPU monitoring
       cudaPackages.cuda_nvcc # CUDA tools (optional)
-      pkgs
+      vulkan-loader
+      vulkan-validation-layers
+      vulkan-tools
+      libva-utils
     ];
   };
 
@@ -74,14 +74,6 @@
     thermald.enable = true;
     power-profiles-daemon.enable = true;
   };
-
-  # System-wide packages
-  environment.systemPackages = with pkgs; [
-    vulkan-loader
-    vulkan-validation-layers
-    vulkan-tools
-    libva-utils
-  ];
 
   # Hardware acceleration
   nixpkgs.config.firefox.enablePlasmaBrowserIntegration = true;

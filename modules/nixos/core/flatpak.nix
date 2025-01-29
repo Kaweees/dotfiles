@@ -1,12 +1,8 @@
 {
-  inputs,
+  config,
   pkgs,
   ...
-}:
-# Flatpak configuration
-{
-  imports = [inputs.nix-flatpak.nixosModules.nix-flatpak];
-
+}: {
   services.flatpak = {
     enable = true;
     packages = [
@@ -19,7 +15,7 @@
         # # Force Wayland by default
         # Context.sockets = [
         #   "wayland"
-        #   "!x11"
+        #   "x11"
         #   "!fallback-x11"
         # ];
       };

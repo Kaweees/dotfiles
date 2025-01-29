@@ -14,6 +14,12 @@
       url = "github:nix-community/home-manager/release-23.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Add nix-flatpak input
+    nix-flatpak = {
+      url = "github:gmodena/nix-flatpak";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -22,18 +28,8 @@
     home-manager,
     ...
   } @ inputs: let
-    devices = [
-      {
-        username = "kaweees";
-        host = "default";
-        system = "x86_64-linux";
-      }
-      {
-        username = "kaweees";
-        host = "aero";
-        system = "x86_64-linux";
-      }
-    ];
+    username = "kaweees";
+    hostname = "aero";
     stateVersion = "23.05";
     inherit (self) outputs;
     # Supported systems for your flake packages, shell, etc.
@@ -66,39 +62,38 @@
 
     # NixOS configuration entrypoint
     # Available through 'nixos-rebuild --flake .#<hostname>'
-    nixosConfigurations = builtins.listToAttrs (map (device: {
-        name = "${device.username}@${device.host}";
-        value = nixpkgs.lib.nixosSystem {
-          system = device.system;
-          specialArgs = {
-            inherit inputs outputs stateVersion;
-            username = device.username;
-            host = device.host;
-          };
-          modules = [
-            # > Our main nixos configuration file <
-            ./hosts/${device.host}/configuration.nix
-          ];
+    nixosConfigurations = {
+      ${hostname} = nixpkgs.lib.nixosSystem {
+        specialArgs = {
+          inherit inputs outputs stateVersion;
+          username = username;
+          host = hostname;
         };
-      })
-      devices);
+        modules = [
+          # > Our main nixos configuration file <
+          ./hosts/${hostname}/configuration.nix
+          inputs.nix-flatpak.nixosModules.nix-flatpak
+        ];
+      };
+    };
 
     # Standalone home-manager configuration entrypoint
     # Available through 'home-manager --flake .#<username>@<hostname>'
-    homeConfigurations = builtins.listToAttrs (map (device: {
-        name = "${device.username}@${device.host}";
-        value = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.${device.system}; # Home-manager requires 'pkgs' instance
-          extraSpecialArgs = {
-            inherit inputs outputs stateVersion;
-            username = device.username;
-            host = device.host;
-          };
-          modules = [./hosts/${device.host}/home.nix];
-          useUserPackages = true;
-          useGlobalPkgs = true;
+    homeConfigurations = {
+      "${username}@${hostname}" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+        extraSpecialArgs = {
+          inherit inputs outputs stateVersion;
+          username = username;
+          host = hostname;
         };
-      })
-      devices);
+        modules = [
+          # > Our main home-manager configuration file <
+          ./hosts/${hostname}/home.nix
+        ];
+        useUserPackages = true;
+        useGlobalPkgs = true;
+      };
+    };
   };
 }

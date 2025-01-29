@@ -1,11 +1,11 @@
 # Add your reusable home-manager modules to this directory, on their own file (https://nixos.wiki/wiki/Module).
 # These should be stuff you would like to share with others, not your personal configurations.
-{
+{pkgs, ...}: {
   # List your module files here
   imports = [
     ./bootloader.nix
     ./hardware.nix
-    ./xorg.nix # Xorg-based desktop environment
+    ./xorg # Xorg-based desktop environment
     ./network.nix
     ./nvidia.nix
     ./pipewire.nix
