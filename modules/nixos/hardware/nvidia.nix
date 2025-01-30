@@ -1,4 +1,8 @@
-{ config, pkgs, ... }: {
+{
+  config,
+  pkgs,
+  ...
+}: {
   # Enable NVIDIA proprietary drivers
   services.xserver.videoDrivers = ["nvidia"];
 
@@ -26,8 +30,6 @@
     # Intel GPU configuration (12th Gen)
     opengl = {
       enable = true;
-      driSupport = true;
-      driSupport32Bit = true;
       extraPackages = with pkgs; [
         intel-media-driver
         (vaapiIntel.override {enableHybridCodec = true;})

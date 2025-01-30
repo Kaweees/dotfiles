@@ -1,5 +1,9 @@
 # X11 and Suckless configuration
-{pkgs, username, ...}: {
+{
+  pkgs,
+  username,
+  ...
+}: {
   services = {
     xserver = {
       # Enable the X11 windowing system.

@@ -198,7 +198,7 @@
   };
 
   programs.zsh = {
-    enable = true;  # Enable ZSH system-wide
+    enable = true; # Enable ZSH system-wide
   };
 
   # Set your time zone and locale
@@ -207,5 +207,4 @@
 
   # System state version
   system.stateVersion = stateVersion;
-
 }
