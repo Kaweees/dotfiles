@@ -131,6 +131,18 @@
     };
     dbus.enable = true;
     fstrim.enable = true;
+    thermald.enable = true;
+    tlp = {
+      enable = true;
+      settings = {
+        CPU_SCALING_GOVERNOR_ON_AC = "performance";
+        CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
+        PCIE_ASPM_ON_BAT = "powersupersave";
+        # Add PCI device power management
+        # 8086:51BC (PCIe root port), 8086:51ED (USB controller), and 10DE:24A0 (NVIDIA GPU)
+        PCI_DEVICE_WHITELIST = "8086:51bc 8086:51ed 10de:24a0 8086:46a6 8086:2725";
+      };
+    };
   };
 
   boot = {

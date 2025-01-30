@@ -1,5 +1,10 @@
 ! Display
-Xft.dpi: 220
+Xft.dpi: 192
+# Xft.autohint: 0
+# Xft.lcdfilter: lcddefault
+# Xft.hinting: 1
+# Xft.hintstyle: hintslight
+# Xft.rgba: rgb
 
 ! Font
 *font: FiraCode Nerd Font:size=20

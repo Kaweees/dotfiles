@@ -1,9 +1,6 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
-  # Enable NVIDIA proprietary drivers
+# https://nixos.wiki/wiki/Nvidia
+{ config, pkgs, ... }: {
+  # Enable NVIDIA proprietary drivers for Xorg and Wayland
   services.xserver.videoDrivers = ["nvidia"];
 
   hardware = {
@@ -17,14 +14,16 @@
 
       # Prime configuration for Intel/NVIDIA switch
       prime = {
-        offload.enable = true; # Enable GPU offloading
+        sync.enable = true; # Enable Optimus PRIME Sync Mode
         # Bus ID of Intel and NVIDIA GPUs (verify with lspci)
-        intelBusId = "PCI:0:2:0";
-        nvidiaBusId = "PCI:1:0:0";
+        intelBusId = "PCI:0:2:0";  # Intel Iris Xe Graphics (8086:46A6)
+        nvidiaBusId = "PCI:1:0:0";  # RTX 3070 Ti (10DE:24A0)
+        # enableOffloadCmd = true; # For AMD GPUs
       };
 
       # Enable experimental features if needed
       # experimentalFeatures.enable = true;
+      package = config.boot.kernelPackages.nvidiaPackages.production;
     };
 
     # Intel GPU configuration (12th Gen)
@@ -35,17 +34,20 @@
         (vaapiIntel.override {enableHybridCodec = true;})
         vaapiVdpau
         libvdpau-va-gl
+        colord
+        xorg.xrandr
       ];
     };
   };
 
   # Kernel configuration
   boot = {
-    kernelModules = ["i915" "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm"];
+    kernelModules = ["i915" "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" "iwlwifi"];
     kernelParams = [
       "nvidia-drm.modeset=1" # Required for PRIME sync
       "i915.force_probe=46a6" # Force probe Intel 12th Gen GPU
       "pcie_aspm=force" # Better power management
+      "i915.enable_psr=0"  # Fix screen flickering
     ];
     # Enable early KMS for NVIDIA
     initrd.kernelModules = ["nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm"];

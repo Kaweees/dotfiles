@@ -7,13 +7,11 @@
       canTouchEfiVariables = true;
       efiSysMountPoint = "/boot";
     };
-    grub = {
+    systemd-boot = {
       enable = true;
-      devices = ["nodev"];
-      efiSupport = true;
-      useOSProber = true;
-      device = "nodev"; # For UEFI systems
+      configurationLimit = 10;
     };
+    grub.enable = false;  # Disable GRUB completely
   };
   boot.kernelPackages = pkgs.linuxPackages_latest;
 }
