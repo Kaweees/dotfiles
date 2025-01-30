@@ -1,8 +1,10 @@
-{pkgs, ...}: {
-  # programs.fzf = {
-  #   enable = true;
+{ pkgs, ... }: {
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;
+  };
 
-  #   enableZshIntegration = true;
-  # };
-  environment.systemPackages = with pkgs; [fzf];
+  home.packages = with pkgs; [
+    fzf
+  ];
 }

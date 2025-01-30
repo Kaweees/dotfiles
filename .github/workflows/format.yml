@@ -40,5 +40,4 @@
             message: "Code formatting and flake update"
             add: "." # Add all files
         - name: Build system configuration
-          run: nix build .#nixosConfigurations.aero.config.system.build.toplevel
-          # run: nix build --show-trace .#nixosConfigurations.aero.config.system.build.toplevel
+          run: nix build --show-trace .#nixosConfigurations.aero.config.system.build.toplevel
