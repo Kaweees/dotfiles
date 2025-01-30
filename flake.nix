@@ -3,7 +3,7 @@
 
   inputs = {
     # Nixpkgs
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
     # You can access packages and modules from different nixpkgs revs
     # at the same time. Here's an working example:
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -25,12 +25,14 @@
   outputs = {
     self,
     nixpkgs,
+    nixpkgs-unstable,
+    nix-flatpak,
     home-manager,
     ...
   } @ inputs: let
     username = "kaweees";
     hostname = "aero";
-    stateVersion = "23.05";
+    stateVersion = "24.11";
     inherit (self) outputs;
     # Supported systems for your flake packages, shell, etc.
     systems = [
@@ -65,9 +67,8 @@
     nixosConfigurations = {
       ${hostname} = nixpkgs.lib.nixosSystem {
         specialArgs = {
-          inherit inputs outputs stateVersion;
-          username = username;
-          host = hostname;
+          inherit inputs outputs username hostname stateVersion;
+          pkgs-unstable = nixpkgs-unstable.legacyPackages.x86_64-linux;
         };
         modules = [
           # > Our main nixos configuration file <
@@ -83,9 +84,8 @@
       "${username}@${hostname}" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
         extraSpecialArgs = {
-          inherit inputs outputs stateVersion;
-          username = username;
-          host = hostname;
+          inherit inputs outputs username hostname stateVersion;
+          pkgs-unstable = nixpkgs-unstable.legacyPackages.x86_64-linux;
         };
         modules = [
           # > Our main home-manager configuration file <

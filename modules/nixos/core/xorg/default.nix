@@ -4,6 +4,4 @@
     ./xserver.nix
     ./dwm.nix
   ];
-
-  fonts.fonts = with pkgs; [maple-mono fira-code];
 }

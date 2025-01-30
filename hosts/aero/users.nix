@@ -3,7 +3,7 @@
   pkgs,
   inputs,
   username,
-  host,
+  hostname,
   ...
 }: {
   # User configuration

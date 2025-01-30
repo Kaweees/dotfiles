@@ -1,4 +1,4 @@
-{host, ...}: let
+{hostname, ...}: let
   custom = {
     font = "Maple Mono";
     font_size = "18px";
@@ -36,7 +36,7 @@ in {
       "cpu"
       "memory"
       (
-        if (host == "desktop")
+        if (hostname == "desktop")
         then "disk"
         else ""
       )

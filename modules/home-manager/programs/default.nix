@@ -1,21 +1,19 @@
 {
   inputs,
   username,
-  host,
+  hostname,
   pkgs,
   ...
 }: {
+  # List your module files here
   imports = [
-    ./vscode.nix # code editor
+    ./docker.nix # docker
     ./fzf.nix # fuzzy finder
     ./git.nix # version control
+    ./vscode.nix # code editor
     # ./nvim.nix # neovim editor
     # ./tmux.nix # terminal multiplexer
     # ./wayland.nix # Wayland-based desktop environment
-    ./zsh.nix # shell
-  ];
-  environment.systemPackages = with pkgs; [
-    docker
-    docker-compose
+    # ./zsh.nix # shell
   ];
 }

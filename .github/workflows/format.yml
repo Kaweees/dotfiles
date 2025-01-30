@@ -7,6 +7,10 @@
         - master
         - main
     pull_request:
+      branches:
+        - master
+        - main
+    workflow_dispatch:
   # The sequence of runs in this workflow:
   jobs:
     format:
@@ -27,11 +31,11 @@
               experimental-features = nix-command flakes
         - name: Verify Nix version
           run: nix --version
-        - name: Show flake outputs
-          run: nix flake show
         - name: Format Nix code
           run: |
             nix fmt
+        - name: Update flake inputs
+          run: nix flake update
         - name: Commit changes
           uses: EndBug/add-and-commit@v9
           with:
@@ -39,5 +43,7 @@
             author_email: ${{ github.actor }}@users.noreply.github.com
             message: "Code formatting and flake update"
             add: "." # Add all files
+        - name: Show flake outputs
+          run: nix flake show
         - name: Build system configuration
-          run: nix build --show-trace .#nixosConfigurations.aero.config.system.build.toplevel
+          run: nix build --show-trace --impure .#nixosConfigurations.aero.config.system.build.toplevel

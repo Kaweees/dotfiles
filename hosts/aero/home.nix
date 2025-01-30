@@ -2,9 +2,8 @@
 # Use this to configure your home environment (it replaces ~/.config/nixpkgs/home.nix)
 {
   inputs,
-  outputs,
   username,
-  host,
+  hostname,
   stateVersion,
   lib,
   config,
@@ -14,39 +13,16 @@
   # You can import other home-manager modules here
   imports = [
     # If you want to use modules your own flake exports (from modules/home-manager):
-    outputs.homeManagerModules.default
+    # outputs.homeManagerModules.default
 
     # Or modules exported from other flakes (such as nix-colors):
     # inputs.nix-colors.homeManagerModules.default
 
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
+    ../../modules/home-manager/programs
   ];
 
-  nixpkgs = {
-    # You can add overlays here
-    overlays = [
-      # Add overlays your own flake exports (from overlays and pkgs dir):
-      outputs.overlays.additions
-      outputs.overlays.modifications
-      outputs.overlays.unstable-packages
-
-      # You can also add overlays exported from other flakes:
-      # neovim-nightly-overlay.overlays.default
-
-      # Or define it inline, for example:
-      # (final: prev: {
-      #   hi = final.hello.overrideAttrs (oldAttrs: {
-      #     patches = [ ./change-hello-to-hi.patch ];
-      #   });
-      # })
-    ];
-    # Configure your nixpkgs instance
-    config = {
-      # Disable if you don't want unfree packages
-      allowUnfree = true;
-    };
-  };
   home = {
     username = username;
     homeDirectory = "/home/${username}";
@@ -79,13 +55,21 @@
         source = "${dotfilesDir}/tmux";
         target = "${homeDir}/.config/tmux";
       };
-      "xorg" = {
-        source = "${dotfilesDir}/xorg";
-        target = "${homeDir}";
+      "xorg-xinitrc" = {
+        source = "${dotfilesDir}/xorg/.xinitrc";
+        target = "${homeDir}/.xinitrc";
       };
-      "zsh" = {
-        source = "${dotfilesDir}/zsh";
-        target = "${homeDir}";
+      "xorg-xresources" = {
+        source = "${dotfilesDir}/xorg/.Xresources";
+        target = "${homeDir}/.Xresources";
+      };
+      "zsh-zshrc" = {
+        source = "${dotfilesDir}/zsh/.zshrc";
+        target = "${homeDir}/.zshrc";
+      };
+      "zsh-zprofile" = {
+        source = "${dotfilesDir}/zsh/.zprofile";
+        target = "${homeDir}/.zprofile";
       };
       "wallpapers" = {
         source = "${dotfilesDir}/wallpapers";
@@ -105,6 +89,8 @@
       };
     };
   };
+
+  nixpkgs.config.allowUnfree = true;
 
   # Enable home-manager
   programs.home-manager.enable = true;
