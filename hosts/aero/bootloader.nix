@@ -11,7 +11,7 @@
       enable = true;
       configurationLimit = 10;
     };
-    grub.enable = false;  # Disable GRUB completely
+    grub.enable = false; # Disable GRUB completely
   };
   boot.kernelPackages = pkgs.linuxPackages_latest;
 }

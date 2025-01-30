@@ -31,11 +31,11 @@
     xorg.xinit
     xorg.xmodmap
     xorg.xsetroot
-    dunst
+    xorg.xrandr
     xorg.xrdb
+    dunst
     picom
     autorandr
     numlockx
-    slstatus
   ];
 }

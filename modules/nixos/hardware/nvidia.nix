@@ -1,5 +1,9 @@
 # https://nixos.wiki/wiki/Nvidia
-{ config, pkgs, ... }: {
+{
+  config,
+  pkgs,
+  ...
+}: {
   # Enable NVIDIA proprietary drivers for Xorg and Wayland
   services.xserver.videoDrivers = ["nvidia"];
 
@@ -8,7 +12,7 @@
     nvidia = {
       modesetting.enable = true; # Required for PRIME sync (for wayland)
       powerManagement.enable = true; # GPU power management
-      powerManagement.finegrained = true; # More aggressive power management
+      powerManagement.finegrained = false; # More aggressive power management
       open = false; # Keep closed source drivers
       nvidiaSettings = true; # Enable NVIDIA settings GUI
 
@@ -16,8 +20,8 @@
       prime = {
         sync.enable = true; # Enable Optimus PRIME Sync Mode
         # Bus ID of Intel and NVIDIA GPUs (verify with lspci)
-        intelBusId = "PCI:0:2:0";  # Intel Iris Xe Graphics (8086:46A6)
-        nvidiaBusId = "PCI:1:0:0";  # RTX 3070 Ti (10DE:24A0)
+        intelBusId = "PCI:0:2:0"; # Intel Iris Xe Graphics (8086:46A6)
+        nvidiaBusId = "PCI:1:0:0"; # RTX 3070 Ti (10DE:24A0)
         # enableOffloadCmd = true; # For AMD GPUs
       };
 
@@ -35,7 +39,6 @@
         vaapiVdpau
         libvdpau-va-gl
         colord
-        xorg.xrandr
       ];
     };
   };
@@ -47,7 +50,7 @@
       "nvidia-drm.modeset=1" # Required for PRIME sync
       "i915.force_probe=46a6" # Force probe Intel 12th Gen GPU
       "pcie_aspm=force" # Better power management
-      "i915.enable_psr=0"  # Fix screen flickering
+      "i915.enable_psr=0" # Fix screen flickering
     ];
     # Enable early KMS for NVIDIA
     initrd.kernelModules = ["nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm"];
