@@ -14,6 +14,10 @@
 
 </div>
 
+<a href="https://github.com/Kaweees/dotfiles">
+  <img alt="NixOS Logo" src="assets/img/nixos.png" align="right" width="150">
+</a>
+
 <div align="left">
   <h1><em><a href="https://miguelvf.dev/blog/dotfiles/compendium">~/.dotfiles</a></em></h1>
 </div>
