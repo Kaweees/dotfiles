@@ -4,7 +4,6 @@
     ./xorg # Xorg-based desktop environment
     ./suckless # Suckless-based desktop environment
     ./network.nix
-    ./pipewire.nix
     ./program.nix
     ./services.nix
     # ./virtualization.nix

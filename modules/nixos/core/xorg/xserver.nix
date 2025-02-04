@@ -9,8 +9,11 @@
       # Enable the X11 windowing system.
       enable = true;
       exportConfiguration = true;
-      xkb.layout = "us";
-
+      # Configure keymap in X11
+      xkb = {
+        layout = "us";
+        variant = "";
+      };
       # Display manager configuration
       displayManager = {
         autoLogin = {
@@ -18,7 +21,7 @@
           user = "${username}";
         };
       };
-
+      # Enable touchpad support
       libinput = {
         enable = true;
       };

@@ -169,7 +169,7 @@
       enable = true; # Enable sudo with wheel group
       wheelNeedsPassword = false; # Allow sudo without password for wheel group
     };
-    rtkit.enable = true;
+    rtkit.enable = true; # Enable Real-Time Kit
   };
 
   # System packages
