@@ -1,5 +1,5 @@
 {
-  description = "A home-manager template providing useful tools & settings for Nix-based development";
+  description = "NixOS system configurations";
 
   inputs = {
     # Principle inputs (updated by `nix run .#update`)
