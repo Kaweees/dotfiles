@@ -1,8 +1,11 @@
-{ flake, ... }:
+{flake,pkgs, ...}:
 let
   inherit (flake.config) me;
 in
 {
+  home.packages = with pkgs; [
+    gh
+  ];
   home.shellAliases = {
     g = "git";
     lg = "lazygit";
