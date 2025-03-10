@@ -3,5 +3,7 @@
     nodejs
     nodePackages.yarn
     nodePackages.pnpm
+    uv
+    go
   ];
 }
