@@ -9,13 +9,13 @@
     fd
     sd
     tree
+    just
 
     # Nix dev
     cachix
     nil # Nix language server
     nix-info
     nixpkgs-fmt
-
 
     # On ubuntu, we need this less for `man home-configuration.nix`'s pager to
     # work.
