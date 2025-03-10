@@ -9,7 +9,6 @@
     fd
     sd
     tree
-    gnumake
 
     # Nix dev
     cachix
