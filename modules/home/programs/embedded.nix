@@ -6,5 +6,7 @@
     cmake
     qemu
     zig
+    picocom
+    openocd
   ];
 }
