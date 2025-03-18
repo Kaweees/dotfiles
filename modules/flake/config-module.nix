@@ -1,5 +1,4 @@
-{ lib, ... }:
-{
+{ lib, ... }: {
   options = {
     me = lib.mkOption {
       default = { };

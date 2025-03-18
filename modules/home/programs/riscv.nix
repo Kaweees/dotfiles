@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{ pkgs, ... }: {
   home.packages = with pkgs; [
     # # Linux GNU toolchain (for applications running on Linux)
     # pkgsCross.riscv64.buildPackages.gcc

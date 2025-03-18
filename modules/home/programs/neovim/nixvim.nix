@@ -14,9 +14,7 @@
   };
 
   # Keymaps
-  globals = {
-    mapleader = " ";
-  };
+  globals = { mapleader = " "; };
 
   plugins = {
 
@@ -25,9 +23,7 @@
     lualine.enable = true;
     bufferline.enable = true;
     treesitter.enable = true;
-    which-key = {
-      enable = true;
-    };
+    which-key = { enable = true; };
     noice = {
       # WARNING: This is considered experimental feature, but provides nice UX
       enable = true;
@@ -51,9 +47,7 @@
           action = "live_grep";
         };
       };
-      extensions = {
-        file-browser.enable = true;
-      };
+      extensions = { file-browser.enable = true; };
     };
 
     # Dev

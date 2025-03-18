@@ -1,5 +1,1 @@
-{pkgs, ...}: {
-  home.packages = with pkgs; [
-    racket
-  ];
-}
+{ pkgs, ... }: { home.packages = with pkgs; [ racket ]; }
