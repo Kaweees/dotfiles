@@ -29,3 +29,5 @@ nix --extra-experimental-features "nix-command flakes" build
 
 echo "✨ Setup complete! You can now use nix with flakes."
 echo "ℹ️  Try running: nix --extra-experimental-features 'nix-command flakes' flake check"
+
+# sudo launchctl kickstart -k system/org.nixos.nix-daemon

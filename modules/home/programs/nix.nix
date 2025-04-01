@@ -1,1 +1,1 @@
-{ pkgs, ... }: { home.packages = with pkgs; [ nixfmt nix ]; }
+{ pkgs, ... }: { home.packages = with pkgs; [ nixfmt nixfmt-classic nix ]; }
